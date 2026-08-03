@@ -30,7 +30,6 @@ def poll() -> Iterator[dict[str, Any]]:
     see service.run(). Leaving a message undeleted lets it become visible again
     after the queue's visibility timeout, which is the retry mechanism.
     """
-    # TODO:
     while True:
         resp = get_client().receive_message(
             QueueUrl=settings.sync_queue_url,

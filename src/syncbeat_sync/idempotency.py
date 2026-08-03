@@ -16,11 +16,9 @@ def event_key(event: PlaybackEvent) -> str:
 
 def already_processed(event: PlaybackEvent) -> bool:
     """True if this (room_id, timestamp) pair was handled recently."""
-    # TODO: EXISTS event_key(event)
     return get_client().exists(event_key(event)) == 1
 
 
 def mark_processed(event: PlaybackEvent) -> None:
     """Remember this event for settings.idempotency_ttl_seconds."""
-    # TODO: SET event_key(event) "1" EX settings.idempotency_ttl_seconds
     get_client().set(event_key(event), "1", ex=settings.idempotency_ttl_seconds)
