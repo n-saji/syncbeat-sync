@@ -37,7 +37,24 @@ def apply_event(previous: RoomState, event: PlaybackEvent) -> RoomState:
 
 
 def _apply_play_pause(previous: RoomState, event: PlaybackEvent) -> RoomState:
+    """PLAY may optionally carry track_id to start a specific track directly
+    (skipping the SKIP-then-PLAY round trip) — same "resets position" rule as
+    SKIP applies whenever a track_id is actually given.
+
+    Without a track_id, this is a plain PLAY/PAUSE toggle - the client always sends
+    its actual current playback position (e.g. PAUSE reports where it stopped, a
+    resume PLAY reports where it's resuming from), so position_ms is taken from the
+    event when present rather than left frozen at whatever it was on the last
+    SKIP/track-load."""
+    if event.track_id:
+        return previous.model_copy(update={
+            "track_id": event.track_id,
+            "position_ms": 0,
+            "is_playing": event.event_type == EventType.PLAY,
+            "updated_at": _now_iso(),
+        })
     return previous.model_copy(update={
+        "position_ms": event.position_ms if event.position_ms is not None else previous.position_ms,
         "is_playing": event.event_type == EventType.PLAY,
         "updated_at": _now_iso(),
     })
