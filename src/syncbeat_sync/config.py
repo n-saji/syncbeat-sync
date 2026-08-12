@@ -18,11 +18,13 @@ class Settings(BaseSettings):
     redis_password: str | None = None
     redis_ssl: bool = False
 
-    # AWS / LocalStack (SQS)
+    # AWS / LocalStack (SQS). Leave aws_access_key/aws_secret_key/aws_endpoint
+    # unset in prod so boto3 falls back to its default credential chain (EC2
+    # instance role) and real regional SQS endpoints instead of LocalStack.
     aws_region: str = "us-east-1"
-    aws_access_key: str = "test"
-    aws_secret_key: str = "test"
-    aws_endpoint: str | None = "http://localhost:4566"
+    aws_access_key: str | None = None
+    aws_secret_key: str | None = None
+    aws_endpoint: str | None = None
 
     sync_queue_url: str = ""
     """URL of sync-queue.fifo — set once the queue exists (see syncbeat-service-breakdown.md)."""

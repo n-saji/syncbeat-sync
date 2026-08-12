@@ -18,8 +18,8 @@ def get_client():
     return boto3.client(
         "sqs",
         region_name=settings.aws_region,
-        aws_access_key_id=settings.aws_access_key,
-        aws_secret_access_key=settings.aws_secret_key,
+        aws_access_key_id=settings.aws_access_key or None,
+        aws_secret_access_key=settings.aws_secret_key or None,
         endpoint_url=settings.aws_endpoint or None,
     )
 

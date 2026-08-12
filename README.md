@@ -3,7 +3,8 @@
 Stateless worker: consumes playback events off `sync-queue.fifo`, recomputes
 canonical room state, writes it to redis, publishes it for the mainframe to
 broadcast over WebSocket. See `../syncbeat-service-breakdown.md` section 2 for
-the full design.
+the full design, and `../syncbeat-mainframe/README.md` for the overall
+architecture diagram this fits into.
 
 This is a **skeleton** — every module has function signatures and docstrings
 but the actual logic is `raise NotImplementedError` / `# TODO`. Fill in, in
